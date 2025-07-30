@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Video obligatorio → Enlace a evaluación</title>
+  <style>
+    :root { --w: 900px; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 16px; background: #fafafa; color: #111; }
+    .wrap { max-width: var(--w); margin: 0 auto; }
+    h1, h2 { margin: 0 0 12px; }
+    .card { background: #fff; border: 1px solid #e6e6e6; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    #player { aspect-ratio: 16/9; width: 100%; }
+    #linkForm { display: none; margin-top: 20px; }
+    .btn {
+      display: inline-block; padding: 12px 18px; text-decoration: none;
+      border-radius: 10px; border: 1px solid #d0d0d0; font-weight: bold;
+    }
+    .hint { color: #666; font-size: 0.95rem; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h2>Reproduce el video completo para desbloquear la evaluación</h2>
+    <div class="card">
+      <!-- Contenedor del reproductor -->
+      <div id="player"></div>
+      <p class="hint">El enlace aparecerá automáticamente cuando el video termine.</p>
+
+      <!-- Enlace oculto al formulario -->
+      <div id="linkForm">
+        <a class="btn" href="https://forms.gle/CVUyzqh6PEXSDwxC6" target="_blank" rel="noopener">
+          👉 Ir a la evaluación (Google Forms)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lógica del reproductor -->
+  <script>
+    var player;
+    // Crea el reproductor cuando la API esté lista
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        videoId: 'QBEwy2luLf8',
+        width: '100%',
+        height: '100%',
+        playerVars: {
+          controls: 0,        // sin controles
+          disablekb: 1,       // bloquea teclado
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    // Cuando termina el video, se muestra el enlace
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        var link = document.getElementById('linkForm');
+        link.style.display = 'block';
+        link.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
+
+  <!-- Carga de la API de YouTube al final para no bloquear -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <noscript>
+    Necesitas habilitar JavaScript para ver el video y desbloquear el enlace a la evaluación.
+  </noscript>
+</body>
+</html>
